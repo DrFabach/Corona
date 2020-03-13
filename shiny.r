@@ -1,4 +1,3 @@
-## Application shiny
 library(shiny)
 library(leaflet)
 library(RColorBrewer)
@@ -8,13 +7,14 @@ library(RCurl)
 library(viridis)
 library(tidyverse)
 
-
 variable <-F
 URL <- getURL("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv")
 data <- read.csv(text = URL, check.names = F)
-names(data)
-url <- "https://twitter.com/intent/tweet?text=Hello%20world&url=https://shiny.rstudio.com/gallery/widget-gallery.html/"
 
+
+# names(data)
+url <- "https://twitter.com/intent/tweet?url=https://thibautfabacher.shinyapps.io/covid-19"
+# 
 
 # https://www.naturalearthdata.com/downloads/50m-cultural-vectors/50m-admin-0-countries-2/
 
@@ -25,7 +25,53 @@ url <- "https://twitter.com/intent/tweet?text=Hello%20world&url=https://shiny.rs
 
 #save(countries, file="shapeFile.RData")
 load("shapeFile.RData")
-
+countries$NAME<-c("Zimbabwe", "Zambia", "Yemen", "Vietnam", "Venezuela", "Vatican", 
+                  "Vanuatu", "Uzbekistan", "Uruguay", "Micronesia", "Marshall Is.", 
+                  "N. Mariana Is.", "U.S. Virgin Is.", "Guam", "American Samoa", 
+                  "Puerto Rico", "United States of America", "S. Geo. and the Is.", 
+                  "Br. Indian Ocean Ter.", "Saint Helena", "Pitcairn Is.", "Anguilla", 
+                  "Falkland Is.", "Cayman Is.", "Bermuda", "British Virgin Is.", 
+                  "Turks and Caicos Is.", "Montserrat", "Jersey", "Guernsey", "Isle of Man", 
+                  "United Kingdom", "United Arab Emirates", "Ukraine", "Uganda", 
+                  "Turkmenistan", "Turkey", "Tunisia", "Trinidad and Tobago", "Tonga", 
+                  "Togo", "Timor-Leste", "Thailand", "Tanzania", "Tajikistan", 
+                  "Taiwan", "Syria", "Switzerland", "Sweden", "eSwatini", "Suriname", 
+                  "S. Sudan", "Sudan", "Sri Lanka", "Spain", "South Korea", "South Africa", 
+                  "Somalia", "Somaliland", "Solomon Is.", "Slovakia", "Slovenia", 
+                  "Singapore", "Sierra Leone", "Seychelles", "Serbia", "Senegal", 
+                  "Saudi Arabia", "São Tomé and Principe", "San Marino", "Samoa", 
+                  "St. Vin. and Gren.", "Saint Lucia", "St. Kitts and Nevis", "Rwanda", 
+                  "Russia", "Romania", "Qatar", "Portugal", "Poland", "Philippines", 
+                  "Peru", "Paraguay", "Papua New Guinea", "Panama", "Palau", "Pakistan", 
+                  "Oman", "Norway", "North Korea", "Nigeria", "Niger", "Nicaragua", 
+                  "New Zealand", "Niue", "Cook Is.", "Netherlands", "Aruba", "Curaçao", 
+                  "Nepal", "Nauru", "Namibia", "Mozambique", "Morocco", "W. Sahara", 
+                  "Montenegro", "Mongolia", "Moldova", "Monaco", "Mexico", "Mauritius", 
+                  "Mauritania", "Malta", "Mali", "Maldives", "Malaysia", "Malawi", 
+                  "Madagascar", "Macedonia", "Luxembourg", "Lithuania", "Liechtenstein", 
+                  "Libya", "Liberia", "Lesotho", "Lebanon", "Latvia", "Laos", "Kyrgyzstan", 
+                  "Kuwait", "Kosovo", "Kiribati", "Kenya", "Kazakhstan", "Jordan", 
+                  "Japan", "Jamaica", "Italy", "Israel", "Palestine", "Ireland", 
+                  "Iraq", "Iran", "Indonesia", "India", "Iceland", "Hungary", "Honduras", 
+                  "Haiti", "Guyana", "Guinea-Bissau", "Guinea", "Guatemala", "Grenada", 
+                  "Greece", "Ghana", "Germany", "Georgia", "Gambia", "Gabon", "France", 
+                  "St. Pierre and Miquelon", "Wallis and Futuna Is.", "St-Martin", 
+                  "St-Barthélemy", "Fr. Polynesia", "New Caledonia", "Fr. S. Antarctic Lands", 
+                  "Åland", "Finland", "Fiji", "Ethiopia", "Estonia", "Eritrea", 
+                  "Eq. Guinea", "El Salvador", "Egypt", "Ecuador", "Dominican Rep.", 
+                  "Dominica", "Djibouti", "Greenland", "Faeroe Is.", "Denmark", 
+                  "Czechia", "N. Cyprus", "Cyprus", "Cuba", "Croatia", "Côte d'Ivoire", 
+                  "Costa Rica", "Dem. Rep. Congo", "Congo", "Comoros", "Colombia", 
+                  "China", "Macao", "Hong Kong", "Chile", "Chad", "Central African Rep.", 
+                  "Cabo Verde", "Canada", "Cameroon", "Cambodia", "Myanmar", "Burundi", 
+                  "Burkina Faso", "Bulgaria", "Brunei", "Brazil", "Botswana", "Bosnia and Herz.", 
+                  "Bolivia", "Bhutan", "Benin", "Belize", "Belgium", "Belarus", 
+                  "Barbados", "Bangladesh", "Bahrain", "Bahamas", "Azerbaijan", 
+                  "Austria", "Australia", "Indian Ocean Ter.", "Heard I. and McDonald Is.", 
+                  "Norfolk Island", "Ashmore and Cartier Is.", "Armenia", "Argentina", 
+                  "Antigua and Barb.", "Angola", "Andorra", "Algeria", "Albania", 
+                  "Afghanistan", "Siachen Glacier", "Antarctica", "Sint Maarten"
+)
 data$`Country/Region`<-as.character(data$`Country/Region`)
 data$`Country/Region`[data$`Country/Region`=="Macau"]<- "Macao"
 data$`Country/Region`[data$`Country/Region`=="Mainland China"]<- "China"
@@ -41,11 +87,22 @@ data$`Country/Region`[data$`Country/Region`=="Saint Barthelemy"]<- "St-Barthéle
 data$`Country/Region`[data$`Country/Region`=="Faroe Islands"]<- "Faeroe Is."
 data$`Country/Region`[data$`Country/Region`=="Bosnia and Herzegovina"]<- "Bosnia and Herz."
 data$`Country/Region`[data$`Country/Region`=="Vatican City"]<- "Vatican"
-
+data$`Country/Region`[data$`Country/Region`=="Korea, South"]<- "South Korea"
 data$`Country/Region`[data$`Country/Region`=="Republic of Ireland"]<- "Ireland"
+data$`Country/Region`[data$`Country/Region`=="Taiwan*"]<-"Taiwan"
+data$`Country/Region`[data$`Country/Region`=="Taiwan*"]<-"Taiwan"
 
+data$`Country/Region`[data$`Country/Region`=="Congo (Kinshasa)"]<-"Congo"
+data$`Country/Region`[data$`Country/Region`=="Cote d'Ivoire"]<-"Côte d'Ivoire"
+ data$`Country/Region`[data$`Country/Region`=="Reunion"]<-"France"
+data$`Country/Region`[data$`Country/Region`=="Martinique"]<-"France"
+data$`Country/Region`[data$`Country/Region`=="French Guiana"]<-"France"
+data$`Country/Region`[data$`Country/Region`=="Holy See"]<-"Vatican"
 
-data$Pays<-as.character(countries$NAME[charmatch(data$`Country/Region`,countries$NAME)])
+# 
+# countries$NAME<-as.character(countries$NAME)
+# countries$NAME[is.na(countries$NAME)]<-"Côte d'Ivoire"
+data$Pays<-as.character(unique(countries$NAME)[charmatch(data$`Country/Region`,unique(countries$NAME))])
 
 
 
@@ -59,7 +116,7 @@ data$Pays[! data$Pays%in%population$pays]
 
 #https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population
 
-population$pays<-as.character(countries$NAME[charmatch(population$Country,countries$NAME)])
+population$pays<-as.character(unique(countries$NAME)[charmatch(population$Country,unique(countries$NAME))])
 
 dataPays<- data%>%dplyr::select(-`Province/State`, -Lat, -Long,-`Country/Region`)%>%group_by(Pays)%>%summarise_each(sum)
 
@@ -103,8 +160,13 @@ ui <- bootstrapPage(
                
 ),
 leafletOutput("map", width = "100%", height = "93%"),
-column(10,HTML("<b><a href='https://www.linkedin.com/in/thibaut-fabacher'>Thibaut FABACHER</a></b></br>
-               <i>Groupe Methode en Recherche Clinique (Pr. MEYER), Laboratoire de Biostatistique (Pr. SAULEAU)</br> CHU STRASBOURG</i>")), 
+column(8,HTML("<b><a href='https://www.linkedin.com/in/thibaut-fabacher'>Thibaut FABACHER</a></b></br>
+               <i>Groupe Methode en Recherche Clinique (Pr. MEYER), Laboratoire de Biostatistique (Pr. SAULEAU)</br><a href='http://www.chru-strasbourg.fr/'  target ='_blank'> CHRU STRASBOURG</a></i>")), 
+column(2,br(), actionButton("twitter_share",
+                       label = "Share",
+                       icon = icon("twitter"),
+                       onclick = sprintf("window.open('%s')",url)) 
+),
 column(2, br(),checkboxInput("credits", "Credits", FALSE)),
 
 
@@ -112,9 +174,10 @@ absolutePanel(id = "input_date_control",class = "panel panel-default",bottom = 6
               
               uiOutput("Slider"),
               helpText("The detail of each country can be obtained by clicking on it."), 
-              radioButtons("variable", choices =  c("Total cases", 'Total cases/population',"New cases over period","New cases over period/population" ), label = "Indicator"),
+              radioButtons("variable", choices =  c("New cases over period","New cases over period/population","Total cases", 'Total cases/population' ), label = "Indicator"),
               
               checkboxInput("legend", "Show legend", TRUE)
+            
 ),
 uiOutput("Credits"),
 absolutePanel(id = "name",class = "panel panel-title",top  = 10, left  = 100, HTML("<h1>COVID-19 outbreak</h1>"),draggable = T)
@@ -275,7 +338,7 @@ server <- function(input, output, session) {
                                   
                                   
                                   " </strong>", 
-                                  round(countries2$ncases/countries2$Pop*100000,2))
+                                  round(countries2$ncases/countries2$Pop*100000,2)," /100 000")
           
           leafletProxy("map", data = countries2)%>%
             addPolygons(fillColor = pal2(log(countries2$ncases/countries2$Pop*100000+1)), 
@@ -299,8 +362,9 @@ server <- function(input, output, session) {
     
     
     
-    # Use a separate observer to recreate the legend as needed.
-    observe({
+  
+    
+      observe({
      
         
         
@@ -348,7 +412,7 @@ server <- function(input, output, session) {
                 #min(jourDate), 
       )}else{
         sliderInput("day2", "Day", min(jourDate), max(jourDate),
-                    value =  c(max(jourDate)-7,max(jourDate)),animate = F, step = 1
+                    value =  c(max(jourDate)-7,max(jourDate)),animate = T, step = 1
                     
                     #min(jourDate), 
         )
@@ -366,12 +430,16 @@ server <- function(input, output, session) {
                     left  = "45%",
                     HTML(
                         "<h1> Data Source : </h1>
-                                                                                                 <p>
-                                                                                                 <li>COVID-19 Cases : <a href='https://github.com/CSSEGISandData/COVID-19'>Johns Hopkins University</a></li>
-  <li>World population : <a href='https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population'>Wikipedia</a></li>
-  <li>Shapefile : <a href='https://www.naturalearthdata.com/downloads/50m-cultural-vectors/50m-admin-0-countries-2/'>Natural Earth Data</a></li>
+<p> <li><a href='https://coronavirus.jhu.edu/map.html'>Coronavirus COVID-19 Global Cases map Johns Hopkins University</a></li>
+  <li>COVID-19 Cases : <a href='https://github.com/CSSEGISandData/COVID-19' target='_blank'>Github Johns Hopkins University</a></li>
+  <li>World population : <a href='https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population' target='_blank'>Wikipedia</a></li>
+  <li>Shapefile : <a href='https://www.naturalearthdata.com/downloads/50m-cultural-vectors/50m-admin-0-countries-2/' target='_blank'>Natural Earth Data</a></li>
+ <li> <a href ='https://github.com/DrFabach/Corona' target='_blank'>Code on Github </a></li>
+ <li> <a href = 'https://www.r-project.org/'  target='_blank'>The R Project for Statistical Computing</a></li>
+  <li> <a href = 'https://shiny.rstudio.com/' target='_blank'>Shiny R package</a></li>
+   <li> <a href = 'https://leafletjs.com/' target='_blank'>Leaflet </a></li>
 
-                                                                                                   </p>"
+                                                                                                                           </p>"
                     ),
                     draggable = T
                 )
