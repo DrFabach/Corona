@@ -22,6 +22,7 @@ url <- "https://twitter.com/intent/tweet?url=https://thibautfabacher.shinyapps.i
 #                      layer = "ne_50m_admin_0_countries", 
 #                      encoding = "utf-8",use_iconv = T,
 #                      verbose = FALSE)
+# countries<-rmapshaper::ms_simplify(countries ,keep_shapes = T)
 
 #save(countries, file="shapeFile.RData")
 load("shapeFile.RData")
