@@ -1,0 +1,8 @@
+## Pour Clémence 
+
+Pourrait tu verifier la fonction datacook, vérifier que j'ai pas fait d'erreur dans les pays .
+
+Et vérifier pourquoi la sortie donne :
+> dataCases<- dataCook(data, pop, countries)
+[1] "Cruise Ship"                      "Côte d'Ivoire"                    "Saint Vincent and the Grenadines"
+[4] "Gambia, The"                      "Bahamas, The" 
