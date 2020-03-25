@@ -1,0 +1,10 @@
+name: corona
+title:
+username:
+account: thibautfabacher
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1923648
+bundleId: 2921539
+url: https://thibautfabacher.shinyapps.io/covid-19/
+when: 1585123420.04537

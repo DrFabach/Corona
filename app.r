@@ -16,8 +16,8 @@ url <- "https://twitter.com/intent/tweet?url=https://thibautfabacher.shinyapps.i
 
 # https://www.naturalearthdata.com/downloads/50m-cultural-vectors/50m-admin-0-countries-2/
 
-# countries <- readOGR(dsn ="ne_50m_admin_0_countries", 
-#                      layer = "ne_50m_admin_0_countries", 
+# countries <- readOGR(dsn ="ne_50m_admin_0_countries",
+#                      layer = "ne_50m_admin_0_countries",
 #                      encoding = "utf-8",use_iconv = T,
 #                      verbose = FALSE)
 
@@ -63,7 +63,6 @@ dataCook<- function(data, pop, countries){
   data$`Country/Region`[data$`Country/Region`=="Equatorial Guinea"]<-"Guinea"
   data$`Country/Region`[data$`Country/Region`=="Central African Republic"]<-"Central African Rep."
   
-  data$`Country/Region`[data$`Country/Region`=="Central African Republic"]<-"Central African Rep."
   data$`Country/Region`[data$`Country/Region`=="Eswatini"]<-"eSwatini"
   
   
@@ -74,6 +73,7 @@ dataCook<- function(data, pop, countries){
   print(data$`Country/Region`[is.na(data$Pays)])
   dataPays<- data%>%dplyr::select(-`Province/State`, -Lat, -Long,-`Country/Region`)%>%group_by(Pays)%>%summarise_each(sum)
   dataPays$Pays<-as.character(dataPays$Pays)
+
   return(dataPays)
 }
 
@@ -86,11 +86,11 @@ population<- read.csv2("pop.csv",stringsAsFactors = F)
 population$pays<-as.character(unique(countries$NAME)[charmatch(population$Country,unique(countries$NAME))])
 
 
-URL <- getURL("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv")
+URL <- getURL("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv")
 data <- read.csv(text = URL, check.names = F)
 dataCases<- dataCook(data, pop, countries)
 
-URL <- getURL("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv")
+URL <- getURL("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv")
 data <- read.csv(text = URL, check.names = F)
 dataDeaths<- dataCook(data, pop, countries)
 
@@ -103,13 +103,15 @@ names(dataCases)[str_detect(names(dataCases), "/")]<-format.Date(jourDate, "%m/%
 names(dataDeaths)[str_detect(names(dataDeaths), "/")]<-format.Date(jourDate, "%m/%d/%y")
 
 dataCases<-left_join(data.frame(Pays = countries$NAME%>%as.character(), Pop =countries$POP_EST%>%as.character()%>%as.numeric()),dataCases)
-
+dataCases<-dataCases%>%filter(!is.na(Pays))
 dataDeaths<-left_join(data.frame(Pays = countries$NAME%>%as.character(), Pop =countries$POP_EST%>%as.character()%>%as.numeric()),dataDeaths)
-
+dataDeaths<-dataDeaths%>%filter(!is.na(Pays))
 arrondi<- function(x) 10^(ceiling(log10(x)))
+dataDeaths[,3]<-ifelse(is.na(dataDeaths[,3]),0,dataDeaths[,3])
+dataCases[,3]<-ifelse(is.na(dataCases[,3]),0,dataCases[,3])
+for(i in 4: dim(dataDeaths)[2]) dataDeaths[,i]<- ifelse(is.na(dataDeaths[,i]), dataDeaths[,i-1],dataDeaths[,i])
+for(i in 4: dim(dataCases)[2]) dataCases[,i]<- ifelse(is.na(dataCases[,i]), dataCases[,i-1],dataCases[,i])
 
-dataDeaths[is.na(dataDeaths)]<- 0
-dataCases[is.na(dataCases)]<- 0
 ui <- bootstrapPage(
   tags$style(type = "text/css", "html, body {width:100%;height:100%}",
              HTML(  ".panel-default {background-color: rgb(256, 256, 256,0.5);
