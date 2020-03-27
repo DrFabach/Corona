@@ -124,6 +124,9 @@ ui <- bootstrapPage(
                padding : 15px;
                border-style: solid;
                border-color: black;}
+                 .panel-mobile {background-color: rgb(256, 256, 256,0);
+               padding : 15px;
+               box-shadow: unset;}
                ")
              
   ),
@@ -147,9 +150,11 @@ ui <- bootstrapPage(
                 helpText("The detail of each country can be obtained by clicking on it."), 
                 uiOutput("selection"),
                 checkboxInput("legend", "Show legend", TRUE)
-                
   ),
+  absolutePanel(id = "mobile",class = "panel panel-mobile",top  = 10, right  = 10, HTML("<a href='https://thibautfabacher.shinyapps.io/covid-19-m/'>Mobile Version</a>")),
+  
   uiOutput("Credits"),
+  uiOutput("mobile"),
   uiOutput("plotEvol"),
   absolutePanel(id = "name",class = "panel panel-title",top  = 10, left  = 100, HTML("<h1>COVID-19 outbreak</h1>"),draggable = T)
 )
@@ -681,6 +686,15 @@ server <- function(input, output, session) {
       
       
       }
+  })
+  
+  output$mobile<- renderUI({
+    
+    if (!input$plotEvolT) {
+      absolutePanel(id = "mobile",class = "panel panel-mobile",top  = 10, right  = 10, HTML("<a href='https://thibautfabacher.shinyapps.io/covid-19-m/'>Mobile Version</a>"))
+      
+    }
+    
   })
   output$Credits <- renderUI({
     if (input$credits) {
