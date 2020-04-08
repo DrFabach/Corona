@@ -63,8 +63,13 @@ dataCook<- function(data, pop, countries){
   data$`Country/Region`[data$`Country/Region`=="Equatorial Guinea"]<-"Guinea"
   data$`Country/Region`[data$`Country/Region`=="Central African Republic"]<-"Central African Rep."
   
+  data$`Country/Region`[data$`Country/Region`=="South Sudan"]<-"S. Sudan"
   data$`Country/Region`[data$`Country/Region`=="Eswatini"]<-"eSwatini"
-  
+  data$`Country/Region`[data$`Country/Region`=="Western Sahara"]<-"W. Sahara"
+  data$`Country/Region`[data$`Country/Region`=="Burma"]<-"Myanmar"
+  data$`Country/Region`[data$`Country/Region`=="Sao Tome and Principe"]<-"São Tomé and Principe"
+  data$`Country/Region`[data$`Country/Region`=="Saint Vincent and the Grenadines"]<-"St. Vin. and Gren."
+  data$`Country/Region`[data$`Country/Region`=="Saint Kitts and Nevis"]<-"St. Kitts and Nevis"
   
 
   # countries$NAME<-as.character(countries$NAME)
